@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:32:40 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/26 20:49:41 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/11/26 23:05:29 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@
 # include <stdlib.h>
 # include <sys/mman.h>
 
+typedef enum	e_type
+{
+	E_TINY,
+	E_SMALL,
+	E_LARGE
+}				t_type;
+
 typedef	struct	s_zone
 {
 	int				status;
@@ -27,21 +34,12 @@ typedef	struct	s_zone
 	struct s_zone	*next;
 }				t_zone;
 
-typedef	struct	s_page
-{
-	int				type;
-	size_t			size;
-	struct s_zone	zone;
-	struct s_page	*next;
-}				t_page;
-
 typedef struct	s_env
 {
-	struct s_page	tiny;
-	struct s_page	small;
-	struct s_page	large;
-}				t_env
-
+	struct s_zone	tiny;
+	struct s_zone	small;
+	struct s_zone	large;
+}				t_env;
 
 void			free(void *ptr);
 void			*malloc(size_t size);
