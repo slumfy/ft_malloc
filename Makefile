@@ -10,8 +10,13 @@
 #                                                                              #
 # **************************************************************************** #
 
+ifeq ($(HOSTTYPE),)
+HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+endif
+
 NAME = ft_malloc
-SRC =
+SRC =	malloc.c\
+	test.c
 
 LIBFT = ./libft/
 CC = gcc -Wall -Werror -Wextra -fsanitize=address -g
@@ -19,16 +24,12 @@ CC = gcc -Wall -Werror -Wextra -fsanitize=address -g
 INCLUDES = ./
 OBJ = $(SRC:.c=.o)
 
-all : $(CHECK) $(NAME)
+all : $(NAME)
 
-CHECK:
-ifeq ($(HOSTTYPE),)
-HOSTTYPE := $(shell uname -m)_$(shell uname -s)
-endif
 
 $(NAME): $(OBJ)
 			make -C $(LIBFT)
-			echo $(HOSTTYPE)
+			$(CC) $(OBJ) -o$(NAME) -I$(LIBFT) -I$(INCLUDES) -L $(LIBFT) -lft
 
 %.o: %.c 
 		$(CC) -c $< -o $@

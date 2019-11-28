@@ -19,12 +19,16 @@
 
 # include <stdlib.h>
 # include <sys/mman.h>
+# include "libft/libft.h"
+
+#include <stdio.h> // debug
 
 typedef enum	e_type
 {
 	E_TINY,
 	E_SMALL,
-	E_LARGE
+	E_LARGE,
+	E_ERROR
 }				t_type;
 
 typedef	struct	s_zone
@@ -34,11 +38,19 @@ typedef	struct	s_zone
 	struct s_zone	*next;
 }				t_zone;
 
+typedef	struct	s_page
+{
+	t_type		type;
+	size_t		size;
+	struct s_page	*next;
+	struct s_zone	*zone;
+}				t_page;
+
 typedef struct	s_env
 {
-	struct s_zone	tiny;
-	struct s_zone	small;
-	struct s_zone	large;
+	struct s_page	*tiny;
+	struct s_page	*small;
+	struct s_page	*large;
 }				t_env;
 
 void			free(void *ptr);
