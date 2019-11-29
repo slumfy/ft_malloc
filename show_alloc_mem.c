@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 03:25:45 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/29 05:07:25 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/11/29 08:13:47 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void		show_alloc_mem(void)
 	if(g_env.small)
 	{
 		page = g_env.small;
-		printf("SMALL : %p\n", g_env.tiny);
+		printf("SMALL : %p\n", g_env.small);
 		while (page)
 		{
 			tmp = page->zone;
@@ -52,7 +52,7 @@ void		show_alloc_mem(void)
 	if(g_env.large)
 	{
 		page = g_env.large;
-		printf("LARGE : %p\n", g_env.tiny);
+		printf("LARGE : %p\n", g_env.large);
 		while (page)
 		{
 			tmp = page->zone;

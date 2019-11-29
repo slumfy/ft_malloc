@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:32:40 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/29 03:41:33 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/11/29 08:14:21 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # define TINY 512
 # define SMALL 1024
-# define LARGE 4096
 
 # include <stdlib.h>
 # include <sys/mman.h>
@@ -40,8 +39,8 @@ typedef	struct	s_zone
 
 typedef	struct	s_page
 {
-	t_type		type;
 	size_t		size;
+	struct s_page	*previous;
 	struct s_page	*next;
 	struct s_zone	*zone;
 }				t_page;
@@ -59,4 +58,7 @@ void			free(void *ptr);
 void			*malloc(size_t size);
 void			*realloc(void *ptr, size_t size);
 void			show_alloc_mem(void);
+
+
+t_type get_type(size_t size);
 #endif

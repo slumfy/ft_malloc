@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:54:08 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/29 05:08:23 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/11/29 08:40:01 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,12 @@
 static void *ret_zone(void *zone, t_type type)
 {
 	if (type == E_TINY)
-		return (zone + sizeof(t_zone));
+		return ((void*)zone + sizeof(t_zone));
 	else if (type == E_TINY)
-		return (zone + sizeof(t_zone));
+		return ((void*)zone + sizeof(t_zone));
 	else
-		return (zone + sizeof(t_page));
+		return ((void*)zone + sizeof(t_page));
 
-}
-
-static t_type	get_type(size_t size)
-{
-	t_type type;
-	type = E_ERROR;	
-	if (size)
-	{
-		if (size < SMALL)
-			type = E_TINY;
-		else if (size < LARGE)
-			type = E_SMALL;
-		else
-			type = E_LARGE;
-	}
-	return (type);
 }
 
 static void set_page_to_env(void *map, t_type type)
@@ -54,6 +38,7 @@ static void set_page_to_env(void *map, t_type type)
 		while(tmp->next)
 			tmp = tmp->next;
 		tmp->next = map;
+		tmp->next->previous = tmp;
 	}
 	else
 		if (type == E_TINY)
@@ -88,12 +73,14 @@ static void	create_page(t_type type, size_t size)
 	void *map;
 	t_page page;
 	t_zone zone;
+	size_t page_size;
 
+	page_size = get_size(type,size);
 	zone.status = 0;
-	zone.size = get_size(type,size);
+	zone.size = page_size;
 	zone.next = NULL;
-	page.type = type;
-	page.size = get_size(type,size);
+	page.size = page_size;
+	page.previous = NULL;
 	page.next = NULL;
 	map = mmap(NULL,page.size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
 	page.zone = (map + sizeof(t_page));
@@ -132,7 +119,7 @@ static t_zone *create_zone(t_zone *zone, size_t size)
 	addr = (void*)zone + sizeof(t_zone) + size;
 	new_zone.status = 0;
 	new_zone.size = zone->size - size;
-	new_zone.next = NULL;
+	new_zone.next = zone->next;
 	zone->status = 1;
 	zone->size = size;
 	ft_memcpy(addr, &new_zone, sizeof(t_zone));
@@ -170,5 +157,8 @@ void	*malloc(size_t size)
 	if ((type = get_type(size)) == E_ERROR)
 		return (NULL);
 	zone = check_mem(type,size);
-	return (ret_zone(zone,type));
+	printf("zone ret = %p\t",zone);
+	zone = ret_zone(zone,type);
+	printf("malloc ret = %p\n",zone);
+	return (zone);
 }
