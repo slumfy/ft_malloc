@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:32:40 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/29 08:14:21 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/11/29 10:13:54 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@
 # include <stdlib.h>
 # include <sys/mman.h>
 # include "libft/libft.h"
-
-#include <stdio.h> // debug
+# include <stdio.h>
 
 typedef enum	e_type
 {
@@ -39,7 +38,7 @@ typedef	struct	s_zone
 
 typedef	struct	s_page
 {
-	size_t		size;
+	size_t			size;
 	struct s_page	*previous;
 	struct s_page	*next;
 	struct s_zone	*zone;
@@ -59,6 +58,12 @@ void			*malloc(size_t size);
 void			*realloc(void *ptr, size_t size);
 void			show_alloc_mem(void);
 
-
-t_type get_type(size_t size);
+t_type			get_type(size_t size);
+t_zone			*create_zone(t_zone *zone, size_t size);
+t_page			*check_env(t_type type, size_t size);
+void			create_page(t_type type, size_t size);
+void			set_page_to_env(void *map, t_type type);
+void			*ret_zone(void *zone, t_type type);
+size_t			get_size(t_type type, size_t size);
+void			*check_mem(t_type type, size_t size);
 #endif

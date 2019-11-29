@@ -6,8 +6,12 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:54:23 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/18 15:54:24 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/11/29 09:55:40 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "ft_malloc.h"
 
+void	*realloc(void *ptr, size_t size)
+{
+}

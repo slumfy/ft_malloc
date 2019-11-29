@@ -1,23 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   test.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/29 09:54:33 by rvalenti          #+#    #+#             */
+/*   Updated: 2019/11/29 10:16:31 by rvalenti         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "string.h"
 #include "ft_malloc.h"
 
-int main()
+int		main(void)
 {
 	char *test;
 	char *test2;
 	char *test3;
 	char *test4;
 	char *test5;
-	char *test6;
-	char *test7;
 
-	test =  (char*)malloc(1);
+	test = (char*)malloc(1);
 	test2 = (char*)malloc(20);
 	test3 = (char*)malloc(1000);
 	test4 = (char*)malloc(4096);
 	test5 = (char*)malloc(4096);
-	test6 = (char*)malloc(4096);
-	test7 = (char*)malloc(1000);
 	free(test2);
 	free(test3);
 	free(test5);

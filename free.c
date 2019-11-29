@@ -6,13 +6,13 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:54:17 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/29 09:20:48 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/11/29 09:54:20 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_malloc.h"
 
-void check_page(t_page *page, t_type type)
+static void		check_page(t_page *page, t_type type)
 {
 	t_zone *zone;
 	t_page *tmp;
@@ -37,12 +37,11 @@ void check_page(t_page *page, t_type type)
 			g_env.small = g_env.small->next;
 		else
 			g_env.large = g_env.large->next;
-
 	}
 	munmap(tmp, tmp->size);
 }
 
-static t_page *get_page_type(t_type type)
+static t_page	*get_page_type(t_type type)
 {
 	if (type == E_TINY)
 		return (g_env.tiny);
@@ -52,12 +51,11 @@ static t_page *get_page_type(t_type type)
 		return (g_env.large);
 }
 
-
-static t_page *check_zone(t_zone *zone, t_type type)
+static t_page	*check_zone(t_zone *zone, t_type type)
 {
 	t_page *page;
 	t_zone *tmp;
-	
+
 	page = get_page_type(type);
 	while (page)
 	{
@@ -78,9 +76,7 @@ static t_page *check_zone(t_zone *zone, t_type type)
 	return (page);
 }
 
-
-
-void free(void *ptr)
+void			free(void *ptr)
 {
 	t_zone *zone;
 	t_page *page;
