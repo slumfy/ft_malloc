@@ -6,7 +6,7 @@
 #    By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/19 12:10:29 by rvalenti          #+#    #+#              #
-#    Updated: 2019/11/29 10:11:38 by rvalenti         ###   ########.fr        #
+#    Updated: 2019/11/29 10:49:24 by rvalenti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ SRC =	malloc.c\
 	show_alloc_mem.c\
 	free.c\
 	page.c\
+	realloc.c\
 	test.c
 
 LIBFT = ./libft/

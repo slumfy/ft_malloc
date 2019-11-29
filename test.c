@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 09:54:33 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/29 10:16:31 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/11/29 10:18:05 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int		main(void)
 	test3 = (char*)malloc(1000);
 	test4 = (char*)malloc(4096);
 	test5 = (char*)malloc(4096);
+	show_alloc_mem();
 	free(test2);
 	free(test3);
 	free(test5);
