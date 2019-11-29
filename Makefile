@@ -14,7 +14,8 @@ ifeq ($(HOSTTYPE),)
 HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-NAME = ft_malloc
+NAME = libft_malloc.so
+LIB = libft_malloc_$(HOSTTYPE).so
 SRC =	malloc.c\
 	malloc_utils.c\
 	show_alloc_mem.c\
@@ -24,7 +25,9 @@ SRC =	malloc.c\
 	test.c
 
 LIBFT = ./libft/
-CC = gcc -Wall -Werror -Wextra -fsanitize=address -g
+LIBFTA = ./libft/libft.a
+
+CC = gcc -Wall -Werror -Wextra
 
 INCLUDES = ./
 OBJ = $(SRC:.c=.o)
@@ -34,7 +37,8 @@ all : $(NAME)
 
 $(NAME): $(OBJ)
 			make -C $(LIBFT)
-			$(CC) $(OBJ) -o$(NAME) -I$(LIBFT) -I$(INCLUDES) -L $(LIBFT) -lft
+			$(CC) -shared $(OBJ) -o$(LIB) $(LIBFTA)
+			ln -s $(LIB) $(NAME)
 
 %.o: %.c 
 		$(CC) -c $< -o $@
@@ -45,5 +49,6 @@ clean:
 
 fclean:	clean
 		rm -f $(NAME)
+		rm -f $(LIB)
 		make fclean -C $(LIBFT)
 re:	fclean all
