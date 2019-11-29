@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:54:17 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/29 08:38:28 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/11/29 09:20:48 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ static t_page *check_zone(t_zone *zone, t_type type)
 		tmp = page->zone;
 		while (tmp)
 		{
-			printf("tmp %p tmpsize %zu zone %p zone size %zu\n", tmp,tmp->size, zone, zone->size);
 			if (tmp == zone)
 			{
 				break ;
@@ -89,7 +88,6 @@ void free(void *ptr)
 
 	zone = ptr - sizeof(t_zone);
 	type = get_type(zone->size);
-	printf("type %u addr = %psize = %zu\n", type,zone , zone->size);
 	if (ptr == NULL || type == E_ERROR)
 		return ;
 	page = check_zone(zone, type);

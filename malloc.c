@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:54:08 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/29 08:40:01 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/11/29 09:28:39 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ static void *ret_zone(void *zone, t_type type)
 {
 	if (type == E_TINY)
 		return ((void*)zone + sizeof(t_zone));
-	else if (type == E_TINY)
+	else if (type == E_SMALL)
 		return ((void*)zone + sizeof(t_zone));
 	else
-		return ((void*)zone + sizeof(t_page));
+		return ((void*)zone + sizeof(t_zone));
 
 }
 
@@ -138,6 +138,8 @@ static void *check_mem(t_type type, size_t size)
 		tmzone = tmpage->zone;
 		while (tmzone)
 		{
+			if (tmzone->status == 1 && type == E_LARGE)
+				break ;
 			if (tmzone->status == 0)
 				if (tmzone->size >= (size + sizeof(t_zone) + 1))
 					return (create_zone(tmzone, size));
@@ -157,8 +159,6 @@ void	*malloc(size_t size)
 	if ((type = get_type(size)) == E_ERROR)
 		return (NULL);
 	zone = check_mem(type,size);
-	printf("zone ret = %p\t",zone);
 	zone = ret_zone(zone,type);
-	printf("malloc ret = %p\n",zone);
 	return (zone);
 }

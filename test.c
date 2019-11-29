@@ -9,6 +9,7 @@ int main()
 	char *test4;
 	char *test5;
 	char *test6;
+	char *test7;
 
 	test =  (char*)malloc(1);
 	test2 = (char*)malloc(20);
@@ -16,9 +17,9 @@ int main()
 	test4 = (char*)malloc(4096);
 	test5 = (char*)malloc(4096);
 	test6 = (char*)malloc(4096);
+	test7 = (char*)malloc(1000);
 	free(test2);
 	free(test3);
-//	free(test5);
-	printf("zonesize %zu \t pqgesize %zu \n", sizeof(t_zone), sizeof(t_page));
+	free(test5);
 	show_alloc_mem();
 }
