@@ -23,6 +23,8 @@ int		main(void)
 
 	test = (char*)malloc(1);
 	test2 = (char*)malloc(20);
+	show_alloc_mem();
+	test2 = (char*)realloc(test2,100);
 	test3 = (char*)malloc(1000);
 	test4 = (char*)malloc(4096);
 	test5 = (char*)malloc(4096);

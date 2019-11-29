@@ -12,9 +12,35 @@
 
 #include "ft_malloc.h"
 
-void	*get_new_alloc(t_zone zone, size_t size)
+void	*merge_zone(t_zone *zone, size_t size)
 {
-	
+	size_t diff;
+
+	diff = size - zone->size;
+	zone->next->size = zone->next->size - diff;
+	ft_memcpy((zone->next + diff), zone->next, sizeof(t_zone));
+	zone->size = size;
+	return (zone);
+}
+
+
+void	*get_new_alloc(t_zone *zone, size_t size)
+{	
+	void	*addr;
+
+	if (zone->next->status == 0)
+	{
+		if (zone->size + zone->next->size >= size + sizeof(t_zone) + 1)
+			addr = merge_zone(zone, size);
+	}
+	else
+	{
+		addr = malloc(size);
+		ft_memcpy(addr , (zone + sizeof(t_zone)), zone->size);
+		free(zone + sizeof(t_zone));
+		return (addr);
+	}
+	return (NULL);
 }
 
 void	*realloc(void *ptr, size_t size)

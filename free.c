@@ -82,10 +82,10 @@ void			free(void *ptr)
 	t_page *page;
 	t_type type;
 
+	if (ptr == NULL)
+		return ;
 	zone = ptr - sizeof(t_zone);
 	type = get_type(zone->size);
-	if (ptr == NULL || type == E_ERROR)
-		return ;
 	page = check_zone(zone, type);
 	if (page)
 		check_page(page, type);
