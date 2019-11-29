@@ -6,7 +6,7 @@
 #    By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/19 12:10:29 by rvalenti          #+#    #+#              #
-#    Updated: 2019/11/19 14:39:27 by rvalenti         ###   ########.fr        #
+#    Updated: 2019/11/29 03:48:20 by rvalenti         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ endif
 
 NAME = ft_malloc
 SRC =	malloc.c\
+	show_alloc_mem.c\
 	test.c
 
 LIBFT = ./libft/

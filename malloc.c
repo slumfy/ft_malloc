@@ -6,13 +6,11 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:54:08 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/26 22:59:52 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/11/29 05:08:23 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_malloc.h"
-
-t_env	g_env = {0,0,0};
 
 static void *ret_zone(void *zone, t_type type)
 {
@@ -25,14 +23,13 @@ static void *ret_zone(void *zone, t_type type)
 
 }
 
-
 static t_type	get_type(size_t size)
 {
 	t_type type;
 	type = E_ERROR;	
 	if (size)
 	{
-		if (size <= SMALL)
+		if (size < SMALL)
 			type = E_TINY;
 		else if (size < LARGE)
 			type = E_SMALL;
@@ -67,17 +64,23 @@ static void set_page_to_env(void *map, t_type type)
 			g_env.large = map;
 }
 
-static *t_page check_env(t_type type)
+static size_t get_size(t_type type, size_t size)
 {
+	size_t page_size;
+	size_t diff;
 
-}
-
-static void *check_mem(t_type type, size_t size)
-{
-	t_page *tmpage;
-	t_zone *tmzone;
-
-	tmpage = check_env(type);
+	if (type == E_TINY || type == E_SMALL)
+	{
+		page_size = (size + sizeof(t_zone)) * 100 + sizeof(t_page);
+		if ((diff = page_size % (size_t)getpagesize) != 0)
+			page_size = page_size + diff;
+		return (page_size);
+	}
+	else
+		page_size = size + sizeof(t_zone) + sizeof(t_page);
+	if ((diff = page_size % (size_t)getpagesize) != 0)
+		page_size = page_size + diff;
+	return (page_size);
 }
 
 static void	create_page(t_type type, size_t size)
@@ -87,10 +90,10 @@ static void	create_page(t_type type, size_t size)
 	t_zone zone;
 
 	zone.status = 0;
-	zone.size = size + 1;
+	zone.size = get_size(type,size);
 	zone.next = NULL;
 	page.type = type;
-	page.size = size + sizeof(t_page) + 1;
+	page.size = get_size(type,size);
 	page.next = NULL;
 	map = mmap(NULL,page.size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
 	page.zone = (map + sizeof(t_page));
@@ -99,6 +102,65 @@ static void	create_page(t_type type, size_t size)
 	set_page_to_env(map, type);
 }
 
+static t_page *check_env(t_type type, size_t size)
+{
+	if (type == E_TINY)
+	{
+		if(!g_env.tiny)
+			create_page(type, size);
+		return (g_env.tiny);
+	}			
+	else if (type == E_SMALL)
+	{
+		if(!g_env.small)			
+			create_page(type, size);
+		return (g_env.small);
+	}
+	else
+	{
+		if (!g_env.large)
+			create_page(type, size);
+		return (g_env.large);
+	}
+}
+
+static t_zone *create_zone(t_zone *zone, size_t size)
+{
+	t_zone new_zone;
+	void *addr;
+
+	addr = (void*)zone + sizeof(t_zone) + size;
+	new_zone.status = 0;
+	new_zone.size = zone->size - size;
+	new_zone.next = NULL;
+	zone->status = 1;
+	zone->size = size;
+	ft_memcpy(addr, &new_zone, sizeof(t_zone));
+	zone->next = addr;
+	return (zone);
+}
+
+static void *check_mem(t_type type, size_t size)
+{
+	t_page *tmpage;
+	t_zone *tmzone;
+
+	tmpage = check_env(type, size);
+	while (tmpage)
+	{
+		tmzone = tmpage->zone;
+		while (tmzone)
+		{
+			if (tmzone->status == 0)
+				if (tmzone->size >= (size + sizeof(t_zone) + 1))
+					return (create_zone(tmzone, size));
+			tmzone = tmzone->next;
+		}
+		tmpage = tmpage->next;
+	}
+	create_page(type,size);
+	return (check_mem(type,size));
+}
 
 void	*malloc(size_t size)
 {
@@ -108,6 +170,5 @@ void	*malloc(size_t size)
 	if ((type = get_type(size)) == E_ERROR)
 		return (NULL);
 	zone = check_mem(type,size);
-	//create_page(type, size);
-	return (zone, ret_zone(type));
+	return (ret_zone(zone,type));
 }

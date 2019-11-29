@@ -4,7 +4,10 @@
 int main()
 {
 	char *test;
- test =  (char*)malloc(10);
-	strcpy(test, "testing");
-	printf("%s",test);
+	char *test2;
+ test =  (char*)malloc(1);
+ test2 = (char*)malloc(20);
+ test2 = (char*)malloc(1024);
+ test2 = (char*)malloc(4096);
+	show_alloc_mem();
 }

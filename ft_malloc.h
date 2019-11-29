@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:32:40 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/26 23:05:29 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/11/29 03:41:33 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ typedef struct	s_env
 	struct s_page	*large;
 }				t_env;
 
+t_env				g_env;
+
 void			free(void *ptr);
 void			*malloc(size_t size);
 void			*realloc(void *ptr, size_t size);
+void			show_alloc_mem(void);
 #endif
