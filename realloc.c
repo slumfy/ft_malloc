@@ -20,27 +20,29 @@ void	*merge_zone(t_zone *zone, size_t size)
 	zone->next->size = zone->next->size - diff;
 	ft_memcpy((zone->next + diff), zone->next, sizeof(t_zone));
 	zone->size = size;
-	return (zone);
+	zone->next = (zone->next + diff);
+	return (zone + sizeof(t_zone));
 }
 
 
-void	*get_new_alloc(t_zone *zone, size_t size)
+void	*get_new_alloc(void *ptr, t_zone *zone, size_t size)
 {	
 	void	*addr;
 
+	addr = NULL;
 	if (zone->next->status == 0)
 	{
-		if (zone->size + zone->next->size >= size + sizeof(t_zone) + 1)
+		if ((zone->size + zone->next->size) >= (size + sizeof(t_zone) + 1))
 			addr = merge_zone(zone, size);
+			addr = ptr;
 	}
 	else
 	{
 		addr = malloc(size);
-		ft_memcpy(addr , (zone + sizeof(t_zone)), zone->size);
-		free(zone + sizeof(t_zone));
-		return (addr);
+		ft_memcpy(addr , ptr, zone->size);
+		free(ptr);
 	}
-	return (NULL);
+	return (addr);
 }
 
 void	*realloc(void *ptr, size_t size)
@@ -56,6 +58,6 @@ void	*realloc(void *ptr, size_t size)
 		free(ptr);
 	if (zone->size >= size)
 		return (NULL);
-	addr = get_new_alloc(zone, size);
+	addr = get_new_alloc(ptr, zone, size);
 	return (addr);
 }

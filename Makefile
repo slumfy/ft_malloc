@@ -27,7 +27,7 @@ SRC =	malloc.c\
 LIBFT = ./libft/
 LIBFTA = ./libft/libft.a
 
-CC = gcc -Wall -Werror -Wextra
+CC = gcc -Wall -Werror -Wextra -fsanitize=address -g
 
 INCLUDES = ./
 OBJ = $(SRC:.c=.o)
@@ -40,7 +40,7 @@ $(NAME): $(OBJ)
 			$(CC) -shared $(OBJ) -o$(LIB) $(LIBFTA)
 			ln -s $(LIB) $(NAME)
 
-%.o: %.c 
+%.o: %.c ft_malloc.h
 		$(CC) -c $< -o $@
 
 clean:

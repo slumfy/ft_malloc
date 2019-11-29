@@ -22,13 +22,14 @@ int		main(void)
 	char *test5;
 
 	test = (char*)malloc(1);
-	test2 = (char*)malloc(20);
-	show_alloc_mem();
-	test2 = (char*)realloc(test2,100);
+	test2 = (char*)malloc(2000);
+	strcpy(test2, "coucou\n");
+	printf("%s", test2);
+	test2 = (char*)realloc(test2,100000);
+	printf("%s", test2);
 	test3 = (char*)malloc(1000);
 	test4 = (char*)malloc(4096);
 	test5 = (char*)malloc(4096);
-	show_alloc_mem();
 	free(test2);
 	free(test3);
 	free(test5);
