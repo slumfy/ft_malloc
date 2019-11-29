@@ -14,14 +14,14 @@
 
 t_env	g_env = {0,0,0};
 
-static void *ret_zone(t_type type)
+static void *ret_zone(void *zone, t_type type)
 {
 	if (type == E_TINY)
-		return (g_env.tiny + sizeof(t_page));
+		return (zone + sizeof(t_zone));
 	else if (type == E_TINY)
-		return (g_env.small + sizeof(t_page));
+		return (zone + sizeof(t_zone));
 	else
-		return (g_env.large + sizeof(t_page));
+		return (zone + sizeof(t_page));
 
 }
 
@@ -67,18 +67,35 @@ static void set_page_to_env(void *map, t_type type)
 			g_env.large = map;
 }
 
+static *t_page check_env(t_type type)
+{
+
+}
+
+static void *check_mem(t_type type, size_t size)
+{
+	t_page *tmpage;
+	t_zone *tmzone;
+
+	tmpage = check_env(type);
+}
+
 static void	create_page(t_type type, size_t size)
 {
 	void *map;
 	t_page page;
+	t_zone zone;
 
+	zone.status = 0;
+	zone.size = size + 1;
+	zone.next = NULL;
 	page.type = type;
 	page.size = size + sizeof(t_page) + 1;
 	page.next = NULL;
-	page.zone = NULL;
 	map = mmap(NULL,page.size, PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0);
+	page.zone = (map + sizeof(t_page));
 	ft_memcpy(map, &page, sizeof(t_page));
-	g_env.tiny = map;
+	ft_memcpy((map + sizeof(t_page)), &zone, sizeof(t_zone));
 	set_page_to_env(map, type);
 }
 
@@ -86,10 +103,11 @@ static void	create_page(t_type type, size_t size)
 void	*malloc(size_t size)
 {
 	t_type type;
+	void *zone;
 
 	if ((type = get_type(size)) == E_ERROR)
 		return (NULL);
-	printf("%d\n", type);
-	create_page(type, size);
-	return (ret_zone(type));
+	zone = check_mem(type,size);
+	//create_page(type, size);
+	return (zone, ret_zone(type));
 }
