@@ -69,7 +69,6 @@ void		*malloc(size_t size)
 {
 	t_type	type;
 	void	*zone;
-
 	if ((type = get_type(size)) == E_ERROR)
 		return (NULL);
 	zone = check_mem(type, size);

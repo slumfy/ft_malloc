@@ -26,7 +26,7 @@ SRC =	malloc.c\
 LIBFT = ./libft/
 LIBFTA = ./libft/libft.a
 
-CC = gcc -Wall -Werror -Wextra
+CC = gcc -Wall -Werror -Wextra 
 
 INCLUDES = ./
 OBJ = $(SRC:.c=.o)
