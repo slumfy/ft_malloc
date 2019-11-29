@@ -21,13 +21,12 @@ SRC =	malloc.c\
 	show_alloc_mem.c\
 	free.c\
 	page.c\
-	realloc.c\
-	test.c
+	realloc.c
 
 LIBFT = ./libft/
 LIBFTA = ./libft/libft.a
 
-CC = gcc -Wall -Werror -Wextra -fsanitize=address -g
+CC = gcc -Wall -Werror -Wextra
 
 INCLUDES = ./
 OBJ = $(SRC:.c=.o)

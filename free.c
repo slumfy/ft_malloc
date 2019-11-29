@@ -85,6 +85,8 @@ void			free(void *ptr)
 	if (ptr == NULL)
 		return ;
 	zone = ptr - sizeof(t_zone);
+	if (check_is_zone(zone))
+		return ;
 	type = get_type(zone->size);
 	page = check_zone(zone, type);
 	if (page)

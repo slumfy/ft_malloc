@@ -16,7 +16,6 @@
 # define TINY 512
 # define SMALL 1024
 
-# include <stdlib.h>
 # include <sys/mman.h>
 # include "libft/libft.h"
 # include <stdio.h>
@@ -66,4 +65,5 @@ void			set_page_to_env(void *map, t_type type);
 void			*ret_zone(void *zone, t_type type);
 size_t			get_size(t_type type, size_t size);
 void			*check_mem(t_type type, size_t size);
+int			check_is_zone(t_zone *zone);
 #endif
