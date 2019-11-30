@@ -16,9 +16,10 @@
 # define TINY 512
 # define SMALL 1024
 
+# include <stdlib.h>
+# include <unistd.h>
 # include <sys/mman.h>
-# include "libft/libft.h"
-# include <stdio.h>
+# include <string.h>
 
 typedef enum	e_type
 {
@@ -66,4 +67,9 @@ void			*ret_zone(void *zone, t_type type);
 size_t			get_size(t_type type, size_t size);
 void			*check_mem(t_type type, size_t size);
 int			check_is_zone(t_zone *zone);
+
+void			*ft_memcpy(void *dest,const void *src, size_t n);
+void			ft_putchar(char c);
+void			ft_putstr(const char *s);
+void			ft_bzero(void *s, size_t n);
 #endif

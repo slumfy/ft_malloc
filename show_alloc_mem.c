@@ -101,7 +101,7 @@ void		show_alloc_mem(void)
 	{
 		page = g_env.small;
 		write(1, "SMALL : ", 7);
-		print_addr((uint64_t)g_env.tiny);
+		print_addr((uint64_t)g_env.small);
 		write(1,"\n",1);
 		total += print_page(page);
 	}
@@ -109,7 +109,7 @@ void		show_alloc_mem(void)
 	{
 		page = g_env.large;
 		write(1, "LARGE : ", 7);
-		print_addr((uint64_t)g_env.tiny);
+		print_addr((uint64_t)g_env.large);
 		write(1,"\n",1);
 		total += print_page(page);
 	}

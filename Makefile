@@ -23,31 +23,29 @@ SRC =	malloc.c\
 	page.c\
 	realloc.c
 
-LIBFT = ./libft/
-LIBFTA = ./libft/libft.a
+CC = gcc 
+CFLAG = -Wall -Werror -Wextra 
 
-CC = gcc -Wall -Werror -Wextra 
+FLAG= -shared -fPIC 
+
 
 INCLUDES = ./
 OBJ = $(SRC:.c=.o)
 
 all : $(NAME)
 
-
 $(NAME): $(OBJ)
-			make -C $(LIBFT)
-			$(CC) -shared $(OBJ) -o$(LIB) $(LIBFTA)
+			$(CC) $(FLAG) $(OBJ) -o$(LIB)
+			rm -f $(NAME)
 			ln -s $(LIB) $(NAME)
 
 %.o: %.c ft_malloc.h
-		$(CC) -c $< -o $@
+		$(CC) $(CFLAG) -c $< -o $@
 
 clean:
 		rm -rf $(OBJ)
-		make clean -C $(LIBFT)
 
 fclean:	clean
 		rm -f $(NAME)
 		rm -f $(LIB)
-		make fclean -C $(LIBFT)
 re:	fclean all
