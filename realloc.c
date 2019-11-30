@@ -64,7 +64,7 @@ void	*get_new_alloc(void *ptr, t_zone *zone, size_t size)
 	void	*addr;
 
 	addr = NULL;
-	if (zone->next->status == 0)
+	if (zone->next->status == 0 && get_type(size) != E_LARGE)
 	{
 		if ((zone->size + zone->next->size) >= (size + sizeof(t_zone) + 1))
 			addr = merge_zone(zone, size);
@@ -84,13 +84,13 @@ void	*realloc(void *ptr, size_t size)
 	t_zone	*zone;
 	void	*addr;
 
-	zone = ptr - sizeof(t_zone);
-	if (check_is_zone(zone))
-		return (NULL);
 	if (ptr == NULL)
 		return(malloc(size));
 	if (ptr && size == 0)
 		free(ptr);
+	zone = ptr - sizeof(t_zone);
+	if (check_is_zone(zone))
+		return (NULL);
 	if (zone->size >= size)
 		return (NULL);
 	addr = get_new_alloc(ptr, zone, size);

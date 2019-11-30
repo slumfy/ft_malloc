@@ -13,13 +13,15 @@
 #ifndef FT_MALLOC_H
 # define FT_MALLOC_H
 
-# define TINY 512
-# define SMALL 1024
+# define TINY 4096
+# define SMALL 1024 * 32
 
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/mman.h>
 # include <string.h>
+
+# include <stdio.h>
 
 typedef enum	e_type
 {
@@ -51,7 +53,7 @@ typedef struct	s_env
 	struct s_page	*large;
 }				t_env;
 
-t_env				g_env;
+struct s_env			g_env;
 
 void			free(void *ptr);
 void			*malloc(size_t size);

@@ -91,7 +91,7 @@ t_zone		*create_zone(t_zone *zone, size_t size)
 
 	addr = (void*)zone + sizeof(t_zone) + size;
 	new_zone.status = 0;
-	new_zone.size = zone->size - size;
+	new_zone.size = zone->size - size - sizeof(t_zone);
 	new_zone.next = zone->next;
 	zone->status = 1;
 	zone->size = size;

@@ -23,10 +23,10 @@ SRC =	malloc.c\
 	page.c\
 	realloc.c
 
-CC = gcc 
-CFLAG = -Wall -Werror -Wextra 
+CC = cc 
+CFLAG = -Wall -Werror -Wextra -g -I./ -fPIC
 
-FLAG= -shared -fPIC 
+FLAG= -shared
 
 
 INCLUDES = ./
@@ -35,7 +35,7 @@ OBJ = $(SRC:.c=.o)
 all : $(NAME)
 
 $(NAME): $(OBJ)
-			$(CC) $(FLAG) $(OBJ) -o$(LIB)
+			$(CC) $(OBJ) -o$(LIB) $(FLAG)
 			rm -f $(NAME)
 			ln -s $(LIB) $(NAME)
 
