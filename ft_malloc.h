@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:32:40 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/29 10:13:54 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/12/02 10:38:09 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,11 @@ void			set_page_to_env(void *map, t_type type);
 void			*ret_zone(void *zone, t_type type);
 size_t			get_size(t_type type, size_t size);
 void			*check_mem(t_type type, size_t size);
-int			check_is_zone(t_zone *zone);
+int				check_is_zone(t_zone *zone);
 
-void			*ft_memcpy(void *dest,const void *src, size_t n);
+void			*ft_memcpy(void *dest, const void *src, size_t n);
 void			ft_putchar(char c);
 void			ft_putstr(const char *s);
 void			ft_bzero(void *s, size_t n);
+void			print_addr(uint64_t nb);
 #endif

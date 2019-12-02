@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 03:25:45 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/29 10:02:34 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/12/02 10:37:10 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,16 @@ void	ft_put_size_t(size_t size)
 	}
 	else
 		ft_putchar(nb + '0');
+}
+
+void	print_zone(t_zone *tmp)
+{
+	print_addr((uint64_t)(tmp + sizeof(t_zone)));
+	write(1, " - ", 3);
+	print_addr((uint64_t)((void*)(tmp + sizeof(t_zone)) + tmp->size));
+	write(1, " : ", 3);
+	ft_put_size_t(tmp->size);
+	write(1, " octets\n", 8);
 }
 
 void	print_addr(uint64_t nb)
@@ -53,7 +63,7 @@ void	print_addr(uint64_t nb)
 	}
 }
 
-static size_t	print_page(t_page *page)
+size_t	print_page(t_page *page)
 {
 	t_page *tmpage;
 	t_zone *tmp;
@@ -61,6 +71,7 @@ static size_t	print_page(t_page *page)
 
 	total = 0;
 	tmpage = page;
+	write(1, "\n", 1);
 	while (page)
 	{
 		tmp = page->zone;
@@ -68,13 +79,8 @@ static size_t	print_page(t_page *page)
 		{
 			if (tmp->status)
 			{
+				print_zone(tmp);
 				total = total + tmp->size;
-				print_addr((uint64_t)(tmp + sizeof(t_zone)));
-				write(1, " - ", 3);
-				print_addr((uint64_t)((void*)(tmp + sizeof(t_zone)) + tmp->size));
-				write(1, " : ", 3);
-				ft_put_size_t(tmp->size);
-				write(1, " octets\n", 8);
 			}
 			tmp = tmp->next;
 		}
@@ -83,37 +89,30 @@ static size_t	print_page(t_page *page)
 	return (total);
 }
 
-void		show_alloc_mem(void)
+void	show_alloc_mem(void)
 {
-	t_page *page;
 	size_t total;
 
 	total = 0;
 	if (g_env.tiny)
 	{
-		page = g_env.tiny;
 		write(1, "TINY : ", 7);
 		print_addr((uint64_t)g_env.tiny);
-		write(1,"\n",1);
-		total += print_page(page);
+		total += print_page(g_env.tiny);
 	}
 	if (g_env.small)
 	{
-		page = g_env.small;
 		write(1, "SMALL : ", 7);
 		print_addr((uint64_t)g_env.small);
-		write(1,"\n",1);
-		total += print_page(page);
+		total += print_page(g_env.small);
 	}
 	if (g_env.large)
 	{
-		page = g_env.large;
 		write(1, "LARGE : ", 7);
 		print_addr((uint64_t)g_env.large);
-		write(1,"\n",1);
-		total += print_page(page);
+		total += print_page(g_env.large);
 	}
 	write(1, "Total : ", 8);
 	ft_put_size_t(total);
-	write(1," octets\n", 8);
+	write(1, " octets\n", 8);
 }

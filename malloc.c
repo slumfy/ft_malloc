@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:54:08 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/29 11:15:54 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/12/02 10:25:11 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void		*malloc(size_t size)
 {
 	t_type	type;
 	void	*zone;
+
 	if ((type = get_type(size)) == E_ERROR)
 		return (NULL);
 	zone = check_mem(type, size);

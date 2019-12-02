@@ -6,13 +6,13 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:54:23 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/29 11:15:47 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/12/02 10:27:57 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_malloc.h"
 
-int	check_loop(t_page *page, t_zone *zone)
+int		check_loop(t_page *page, t_zone *zone)
 {
 	t_zone *tmp;
 
@@ -30,7 +30,7 @@ int	check_loop(t_page *page, t_zone *zone)
 	return (1);
 }
 
-int	check_is_zone(t_zone *zone)
+int		check_is_zone(t_zone *zone)
 {
 	t_page *page;
 
@@ -58,9 +58,8 @@ void	*merge_zone(t_zone *zone, size_t size)
 	return (zone + sizeof(t_zone));
 }
 
-
 void	*get_new_alloc(void *ptr, t_zone *zone, size_t size)
-{	
+{
 	void	*addr;
 
 	addr = NULL;
@@ -73,7 +72,7 @@ void	*get_new_alloc(void *ptr, t_zone *zone, size_t size)
 	else
 	{
 		addr = malloc(size);
-		ft_memcpy(addr , ptr, zone->size);
+		ft_memcpy(addr, ptr, zone->size);
 		free(ptr);
 	}
 	return (addr);
@@ -85,7 +84,7 @@ void	*realloc(void *ptr, size_t size)
 	void	*addr;
 
 	if (ptr == NULL)
-		return(malloc(size));
+		return (malloc(size));
 	if (ptr && size == 0)
 		free(ptr);
 	zone = ptr - sizeof(t_zone);
