@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:54:08 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/12/02 10:25:11 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/12/02 16:47:54 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 void		*ret_zone(void *zone, t_type type)
 {
 	if (type == E_TINY)
-		return ((void*)zone + sizeof(t_zone));
+		return (zone + sizeof(t_zone));
 	else if (type == E_SMALL)
-		return ((void*)zone + sizeof(t_zone));
+		return (zone + sizeof(t_zone));
 	else
-		return ((void*)zone + sizeof(t_zone));
+		return (zone + sizeof(t_zone));
 }
 
 size_t		get_size(t_type type, size_t size)
@@ -54,9 +54,8 @@ void		*check_mem(t_type type, size_t size)
 		{
 			if (tmzone->status == 1 && type == E_LARGE)
 				break ;
-			if (tmzone->status == 0)
-				if (tmzone->size >= (size + sizeof(t_zone) + 1))
-					return (create_zone(tmzone, size));
+			if (tmzone->status == 0 && tmzone->size >= (size))
+				return (create_zone(tmzone, size));
 			tmzone = tmzone->next;
 		}
 		tmpage = tmpage->next;
@@ -68,7 +67,7 @@ void		*check_mem(t_type type, size_t size)
 void		*malloc(size_t size)
 {
 	t_type	type;
-	void	*zone;
+	t_zone	*zone;
 
 	if ((type = get_type(size)) == E_ERROR)
 		return (NULL);

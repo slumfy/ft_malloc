@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 10:04:50 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/29 10:15:44 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/12/02 16:44:46 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void		create_page(t_type type, size_t size)
 	page.next = NULL;
 	map = mmap(NULL, page.size, PROT_READ | PROT_WRITE
 			, MAP_ANON | MAP_PRIVATE, -1, 0);
-	page.zone = (map + sizeof(t_page));
+	page.zone = map + sizeof(t_page);
 	ft_memcpy(map, &page, sizeof(t_page));
 	ft_memcpy((map + sizeof(t_page)), &zone, sizeof(t_zone));
 	set_page_to_env(map, type);
@@ -89,13 +89,16 @@ t_zone		*create_zone(t_zone *zone, size_t size)
 	t_zone	new_zone;
 	void	*addr;
 
-	addr = (void*)zone + sizeof(t_zone) + size;
-	new_zone.status = 0;
-	new_zone.size = zone->size - size - sizeof(t_zone);
-	new_zone.next = zone->next;
+	if (zone->size >= (size + sizeof(t_zone) + 1))
+	{
+		addr = (void*)zone + sizeof(t_zone) + size;
+		new_zone.status = 0;
+		new_zone.size = zone->size - size - sizeof(t_zone);
+		new_zone.next = zone->next;
+		ft_memcpy(addr, &new_zone, sizeof(t_zone));
+		zone->next = addr;
+	}
 	zone->status = 1;
 	zone->size = size;
-	ft_memcpy(addr, &new_zone, sizeof(t_zone));
-	zone->next = addr;
 	return (zone);
 }

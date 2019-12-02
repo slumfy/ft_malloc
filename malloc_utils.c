@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 05:40:31 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/11/29 09:55:21 by rvalenti         ###   ########.fr       */
+/*   Updated: 2019/12/02 14:42:31 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ t_type	get_type(size_t size)
 	type = E_ERROR;
 	if (size)
 	{
-		if (size < TINY)
+		if (size <= TINY)
 			type = E_TINY;
-		else if (size < SMALL)
+		else if (size <= SMALL)
 			type = E_SMALL;
 		else
 			type = E_LARGE;
