@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:32:40 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/12/02 10:38:09 by rvalenti         ###   ########.fr       */
+/*   Updated: 2020/01/08 19:46:41 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define FT_MALLOC_H
 
 # define TINY 4096
-# define SMALL 1024 * 32
+# define SMALL 32768
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -63,7 +63,7 @@ void			show_alloc_mem(void);
 t_type			get_type(size_t size);
 t_zone			*create_zone(t_zone *zone, size_t size);
 t_page			*check_env(t_type type, size_t size);
-void			create_page(t_type type, size_t size);
+int				create_page(t_type type, size_t size);
 void			set_page_to_env(void *map, t_type type);
 void			*ret_zone(void *zone, t_type type);
 size_t			get_size(t_type type, size_t size);

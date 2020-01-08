@@ -6,7 +6,7 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:54:17 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/12/02 16:47:34 by rvalenti         ###   ########.fr       */
+/*   Updated: 2020/01/08 19:47:35 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,10 @@ static t_page	*check_zone(t_zone *zone, t_type type)
 
 void			free(void *ptr)
 {
-	t_zone *zone;
-	t_page *page;
-	t_type type;
+	t_zone	*zone;
+	t_page	*page;
+	t_page	*head;
+	t_type	type;
 
 	if (ptr == NULL)
 		return ;
@@ -88,6 +89,11 @@ void			free(void *ptr)
 		return ;
 	type = get_type(zone->size);
 	page = check_zone(zone, type);
-	if (page)
+	head = NULL;
+	if (type == E_TINY)
+		head = g_env.tiny;
+	else if (type == E_SMALL)
+		head = g_env.small;
+	if (page && (head == NULL || head->next != NULL))
 		check_page(page, type);
 }

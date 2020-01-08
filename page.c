@@ -6,13 +6,13 @@
 /*   By: rvalenti <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 10:04:50 by rvalenti          #+#    #+#             */
-/*   Updated: 2019/12/02 16:44:46 by rvalenti         ###   ########.fr       */
+/*   Updated: 2020/01/08 19:51:16 by rvalenti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_malloc.h"
 
-void		set_page_to_env(void *map, t_type type)
+void	set_page_to_env(void *map, t_type type)
 {
 	t_page *tmp;
 
@@ -40,40 +40,43 @@ void		set_page_to_env(void *map, t_type type)
 	}
 }
 
-void		create_page(t_type type, size_t size)
+int		create_page(t_type type, size_t size)
 {
 	void	*map;
 	t_page	page;
 	t_zone	zone;
 	size_t	page_size;
 
-	page_size = get_size(type, size);
+	if ((page_size = get_size(type, size)) == 0)
+		return (1);
 	zone.status = 0;
 	zone.size = page_size;
 	zone.next = NULL;
 	page.size = page_size;
 	page.previous = NULL;
 	page.next = NULL;
-	map = mmap(NULL, page.size, PROT_READ | PROT_WRITE
-			, MAP_ANON | MAP_PRIVATE, -1, 0);
+	if ((map = mmap(NULL, page.size, PROT_READ | PROT_WRITE
+			, MAP_ANON | MAP_PRIVATE, -1, 0)) == MAP_FAILED)
+		return (1);
 	page.zone = map + sizeof(t_page);
 	ft_memcpy(map, &page, sizeof(t_page));
 	ft_memcpy((map + sizeof(t_page)), &zone, sizeof(t_zone));
 	set_page_to_env(map, type);
+	return (0);
 }
 
-t_page		*check_env(t_type type, size_t size)
+t_page	*check_env(t_type type, size_t size)
 {
 	if (type == E_TINY)
 	{
 		if (!g_env.tiny)
-			create_page(type, size);
+			create_page(type, TINY);
 		return (g_env.tiny);
 	}
 	else if (type == E_SMALL)
 	{
 		if (!g_env.small)
-			create_page(type, size);
+			create_page(type, SMALL);
 		return (g_env.small);
 	}
 	else
@@ -84,7 +87,7 @@ t_page		*check_env(t_type type, size_t size)
 	}
 }
 
-t_zone		*create_zone(t_zone *zone, size_t size)
+t_zone	*create_zone(t_zone *zone, size_t size)
 {
 	t_zone	new_zone;
 	void	*addr;
